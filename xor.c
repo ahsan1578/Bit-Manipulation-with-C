@@ -1,10 +1,15 @@
 #include <stdio.h>
 int bitXor(int x, int y);
+int allEvenBits(int x);
+
+
 int main(){
 	int x, y;
 	scanf("%d",&x);
 	scanf("%d",&y);
 	printf("The xor: %x\n", bitXor(x,y));
+	scanf("%x",&x);
+	printf("%d\n", allEvenBits(x));
 	return 0;
 }
 
@@ -24,3 +29,31 @@ int bitXor(int x, int y){
 	//so (~x & y)|(x & ~y) = the following expression
 	return ~(~(~x & y) & ~(~y & x));
 }
+
+
+/*
+ * allEvenBits - return 1 if all even-numbered bits in word set to 1
+ *   Examples allEvenBits(0xFFFFFFFE) = 0, allEvenBits(0x55555555) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 2
+ */
+
+int allEvenBits(int x) {
+	//Principle behind the solution is:
+	//If we do x|y where all odd bits in y are 1, we should get all bits 1 integer given all even bits in x are 1
+	//That is, we should have 0xFFFFFFFF
+	//not (~) of that should be all zeroes and not (!) of the all zeroes should be one
+	//If all even bits in x were not 1 to start with, the ~(x|y) will not be all zeroes
+	//so !(~(x|y) will be 0
+
+	
+	//As we are not allowed to have constants more than 8 bits let's create a variable 0xAA
+	//0xAA = 10101010 in banary
+	//Left shift and add the same 0xAA 4 times to get all odd bits 1
+	
+	int eightBitAllOddOne = 0xAA;
+	int allOddBitOne =((((((eightBitAllOddOne<<8)+eightBitAllOddOne)<<8)+eightBitAllOddOne)<<8)+eightBitAllOddOne);
+	return !(~(x|allOddBitOne));
+}
+
