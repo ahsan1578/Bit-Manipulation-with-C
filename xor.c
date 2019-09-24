@@ -1,6 +1,7 @@
 #include <stdio.h>
 int bitXor(int x, int y);
 int allEvenBits(int x);
+int replaceByte(int x, int n, int c);
 
 
 int main(){
@@ -10,6 +11,9 @@ int main(){
 	printf("The xor: %x\n", bitXor(x,y));
 	scanf("%x",&x);
 	printf("%d\n", allEvenBits(x));
+	int n,c;
+	scanf("%x %d %x", &x, &n, &c);
+	printf("%x", replaceByte(x,n,c));
 	return 0;
 }
 
@@ -56,4 +60,22 @@ int allEvenBits(int x) {
 	int allOddBitOne =((((((eightBitAllOddOne<<8)+eightBitAllOddOne)<<8)+eightBitAllOddOne)<<8)+eightBitAllOddOne);
 	return !(~(x|allOddBitOne));
 }
+
+
+/*
+ * replaceByte(x,n,c) - Replace byte n in x with c
+ *   Bytes numbered from 0 (LSB) to 3 (MSB)
+ *   Examples: replaceByte(0x12345678,1,0xab) = 0x1234ab78
+ *   You can assume 0 <= n <= 3 and 0 <= c <= 255
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 10
+ *   Rating: 3
+ */
+int replaceByte(int x, int n, int c) {
+	int byteToPut = c<<(8*n);
+	int helperInt = (~0)^((0xFF)<<8*n);
+	int xWithZeroesInN_thByte = x & helperInt;
+	return xWithZeroesInN_thByte|byteToPut;
+}
+
 
