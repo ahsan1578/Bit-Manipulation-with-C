@@ -387,6 +387,7 @@ int howManyBits(int x) {
 
 
   //We continue the process
+
   int left8 = (!(!(withLeftZeroes>>8)))<<3;
   withLeftZeroes = withLeftZeroes>>left8;
 
@@ -478,6 +479,7 @@ int trueFiveEighths(int x)
 {
     int multFive;
     //Divide by 8 first to avoid overflow
+
     int divEight = x>>3;
 
     int remUnchecked = x&7;
@@ -486,6 +488,7 @@ int trueFiveEighths(int x)
     int remMultFive = remUnchecked + (remUnchecked << 2);
 
     //Add 7 to remMultFive is x is negative, 0 if positive
+
     int toAdd = (x>>31)&7;
     return multFive + ((remMultFive+toAdd)>>3);
 }
