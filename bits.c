@@ -291,13 +291,13 @@ int tmax(void) {
 int fitsBits(int x, int n) {
   	//Principle: We have to keep only one sign bit and
         //we can strip all the other sign bits
-        //That will give us the minimun number of bits we need
+        //That will give us the minimum number of bits we need
         //So if we can show that from nth position all the bits to left is same as sign bit
         //that means x fits in n bits
         //So we show nth bit same as sign bit
         //All the bits to left is same and sign bit
         int signBit = (x>>31)&1;
-        int nthBit = ((x<<1)>>n)&1;
+        int nthBit = (x>>(n+((~1)+1)))&1;
         int striped_n_bits = x>>n;
         int allSignBit = x>>31;
         return !(signBit ^ nthBit) & !(striped_n_bits ^ allSignBit);
@@ -325,7 +325,7 @@ int isPositive(int x) {
   	//We just need to check sign bit
         //And-ng with int that has all 0s except the sign bit(which is 1) will give us the sign bit
         //Positive when sign bit is zero, that is return not of sign bit
-        return !(x&(1<<31));
+        return (!(!(x^0)))&(!(x&(1<<31)));
 }
 /* 
  * subOK - Determine if can compute x-y without overflow
