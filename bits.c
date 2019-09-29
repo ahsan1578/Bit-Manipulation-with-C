@@ -254,13 +254,13 @@ int bitXor(int x, int y) {
  */
 int replaceByte(int x, int n, int c) {
   	//We take the byte that we are going to replace with in nth byte position in an int
-        int byteToPut = c<<(8*n);
+        int byteToPut = c<<(n<<3);
 
         //We will make all the bits at the current n-th byte to zero
         //To do this first we are taking help of an int with all zeroes in nth byte
         //and the other bits will be ones
         //First take FF to the nth position and xor with all ones(~0)
-        int helperInt = (~0)^((0xFF)<<8*n);
+        int helperInt = (~0)^((0xFF)<<(n<<3));
 
         //Anding the helper int will make all bits in nth byte zeroes
         int xWithZeroesInN_thByte = x & helperInt;
@@ -481,13 +481,13 @@ unsigned float_twice(unsigned uf) {
  */
 int trueFiveEighths(int x)
 {
+    int multFive;
     //Divide by 8 first to avoid overflow
     int divEight = x>>3;
-    printf("%d %d\n", x, divEight);
 
     int remUnchecked = x&7;
-    int multFive =divEight +  (divEight << 2);
-    printf("a: %d\n", multFive);
+    multFive =divEight +  (divEight << 2);
+    
     int remMultFive = remUnchecked + (remUnchecked << 2);
 
     //Add 7 to remMultFive is x is negative, 0 if positive
