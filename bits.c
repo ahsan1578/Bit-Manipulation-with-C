@@ -348,7 +348,7 @@ int subOK(int x, int y) {
 
 
         //Now we add all the conditions
-	return !(isSIgnBitSame & signXnegY);
+	return !(isSignBitSame & signXnegY);
 
 }
 /* howManyBits - return the minimum number of bits required to represent x in
