@@ -297,8 +297,9 @@ int fitsBits(int x, int n) {
         //So we show nth bit same as sign bit
         //All the bits to left is same and sign bit
         int signBit = (x>>31)&1;
-        int nthBit = (x>>(n+((~1)+1)))&1;
-        int striped_n_bits = x>>n;
+	int nMinusOne = n+((~1)+1);
+        int nthBit = (x>>nMinusOne)&1;
+        int striped_n_bits = x>>nMinusOne;
         int allSignBit = x>>31;
         return !(signBit ^ nthBit) & !(striped_n_bits ^ allSignBit);
 
@@ -338,22 +339,16 @@ int isPositive(int x) {
 int subOK(int x, int y) {
   	int negY = (~y)+1;
 
-        //Special case: if x and y both are 0x80000000, their sign doesn't change for negation
-        //overflow doesn't occure either
+        //If x and y has same sign, there won't be any overflow
+	//If the sign bits are different xor will change the sign bit 1
+	int isSignBitSame = (x^y)>>31;
+	
+	//if x and negY has same sign as x+negY, no overflow
+        int signXnegY = ((x+negY)^x)>>31;
 
-        int specialNum = 1<<31;
-        int isSpecialCase = (!(x^specialNum))&(!(y^specialNum));
 
-
-        int signNegY = (negY>>31)&1;
-        int signX = (x>>31)&1;
-        int signXnegY = ((x+negY)>>31)&1;
-
-        //If sign bits are different, that means no overflow
-        int isDiffSign = signX ^ signNegY;
-
-        //If sign bits are same x-y must have same sign bit to not overflow
-        return isSpecialCase | isDiffSign | !(signX ^ signXnegY);
+        //Now we add all the conditions
+	return !(isSIgnBitSame & signXnegY);
 
 }
 /* howManyBits - return the minimum number of bits required to represent x in
