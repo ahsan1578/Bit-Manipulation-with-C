@@ -364,6 +364,7 @@ int subOK(int x, int y) {
  *  Rating: 4
  */
 int howManyBits(int x) {
+  int left16, left8, left4, left2, left1, numBits;
   int allSignBit = x>>31;
   int withLeftZeroes = allSignBit ^ x;
 
@@ -380,7 +381,7 @@ int howManyBits(int x) {
   //We continue the process until we get down to 1 bit
 
 
-  int left16 =(!(!(withLeftZeroes>>16)))<<4;
+  left16 =(!(!(withLeftZeroes>>16)))<<4;
   //if there was a 1 in left 16 bits, the left16 should give us value 16, otherwise 0
   //Now we right shift the integer according to the value of left16
   withLeftZeroes = withLeftZeroes>>left16;
@@ -388,22 +389,22 @@ int howManyBits(int x) {
 
   //We continue the process
 
-  int left8 = (!(!(withLeftZeroes>>8)))<<3;
+  left8 = (!(!(withLeftZeroes>>8)))<<3;
   withLeftZeroes = withLeftZeroes>>left8;
 
-  int left4 = (!(!(withLeftZeroes>>4)))<<2;
+  left4 = (!(!(withLeftZeroes>>4)))<<2;
   withLeftZeroes = withLeftZeroes>>left4;
 
-  int left2 = (!(!(withLeftZeroes>>2)))<<1;
+  left2 = (!(!(withLeftZeroes>>2)))<<1;
   withLeftZeroes = withLeftZeroes>>left2;
 
-  int left1 = !(!(withLeftZeroes>>1));
+  left1 = !(!(withLeftZeroes>>1));
   withLeftZeroes = withLeftZeroes>>left1;
 
   int leftMost = withLeftZeroes;
 
   //Now we add the 1 sign bit 
-  int numBits = left16 + left8 + left4 + left2 + left1 + leftMost + 1;
+  numBits = left16 + left8 + left4 + left2 + left1 + leftMost + 1;
 
   return numBits;
 
@@ -446,6 +447,7 @@ unsigned float_abs(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
+  unsigned signBit;
   //Multiplying a float by two is just adding 1 to the exponent
   //Multiplying 0 by 2 will give zero
   //Multiplying infinity of NAN values by 2 doesn't make sense
@@ -455,7 +457,7 @@ unsigned float_twice(unsigned uf) {
 
   //For values less than one, we keep the sign bit unchanged and left shift rest 31 bits by 1
 
-  unsigned signBit = uf & 0x80000000;
+  signBit = uf & 0x80000000;
 
   if(((uf>>23) & 0xFF) == 0)
          return (uf<<1) | signBit; //We or the sign bit so that if the sign bit was 1, it stays 1
@@ -477,18 +479,18 @@ unsigned float_twice(unsigned uf) {
  */
 int trueFiveEighths(int x)
 {
-    int multFive;
+    int multFive,remUnchecked,remMultFive, toAdd;
     //Divide by 8 first to avoid overflow
 
     int divEight = x>>3;
 
-    int remUnchecked = x&7;
+    remUnchecked = x&7;
     multFive =divEight +  (divEight << 2);
     
-    int remMultFive = remUnchecked + (remUnchecked << 2);
+    remMultFive = remUnchecked + (remUnchecked << 2);
 
     //Add 7 to remMultFive is x is negative, 0 if positive
 
-    int toAdd = (x>>31)&7;
+    toAdd = (x>>31)&7;
     return multFive + ((remMultFive+toAdd)>>3);
 }
