@@ -364,7 +364,7 @@ int subOK(int x, int y) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  int left16, left8, left4, left2, left1, numBits;
+  int left16, left8, left4, left2, left1, numBits, leftMost;
   int allSignBit = x>>31;
   int withLeftZeroes = allSignBit ^ x;
 
@@ -401,7 +401,7 @@ int howManyBits(int x) {
   left1 = !(!(withLeftZeroes>>1));
   withLeftZeroes = withLeftZeroes>>left1;
 
-  int leftMost = withLeftZeroes;
+  leftMost = withLeftZeroes;
 
   //Now we add the 1 sign bit 
   numBits = left16 + left8 + left4 + left2 + left1 + leftMost + 1;
